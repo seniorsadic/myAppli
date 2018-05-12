@@ -1,0 +1,68 @@
+<?php
+
+namespace MyServiceFoodBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Restaurant
+ *
+ * @ORM\Table(name="restaurant")
+ * @ORM\Entity
+ */
+class Restaurant
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_resto", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idResto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adresse", type="string", length=255, nullable=true)
+     */
+    private $adresse;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="code", type="string", length=255, nullable=true)
+     */
+    private $code;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="designation", type="string", length=255, nullable=true)
+     */
+    private $designation;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telephone", type="string", length=255, nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image_url", type="string", length=255, nullable=true)
+     */
+    private $imageUrl;
+
+
+}
+

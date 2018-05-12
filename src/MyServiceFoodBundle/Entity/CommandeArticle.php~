@@ -1,0 +1,84 @@
+<?php
+
+namespace MyServiceFoodBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CommandeArticle
+ *
+ * @ORM\Table(name="commande_article", indexes={@ORM\Index(name="FK1oj919k5kluteecator3cr33n", columns={"id_article"}), @ORM\Index(name="FKp7o0b8tl4dw3ipdwnbwq5ifvr", columns={"id_commande"}), @ORM\Index(name="FKepfr6njnymsrn9yodn10ptnwf", columns={"id_cuisinier"})})
+ * @ORM\Entity
+ */
+class CommandeArticle
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_commande_article", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idCommandeArticle;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="prix_total", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $prixTotal;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="prix_unitaire", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $prixUnitaire;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="quantite", type="bigint", nullable=true)
+     */
+    private $quantite;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="statut", type="integer", nullable=false)
+     */
+    private $statut = '0';
+
+    /**
+     * @var \Article
+     *
+     * @ORM\ManyToOne(targetEntity="Article")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_article", referencedColumnName="id_article")
+     * })
+     */
+    private $idArticle;
+
+    /**
+     * @var \Employe
+     *
+     * @ORM\ManyToOne(targetEntity="Employe")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_cuisinier", referencedColumnName="id_employe")
+     * })
+     */
+    private $idCuisinier;
+
+    /**
+     * @var \Commande
+     *
+     * @ORM\ManyToOne(targetEntity="Commande")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_commande", referencedColumnName="id_commande")
+     * })
+     */
+    private $idCommande;
+
+
+}
+

@@ -1,0 +1,73 @@
+<?php
+
+namespace MyServiceFoodBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * CommandeArticleTemporaire
+ *
+ * @ORM\Table(name="commande_article_temporaire", indexes={@ORM\Index(name="FKnduy7bwqgihpfdlbrx8mtqqv3", columns={"id_article"}), @ORM\Index(name="FK1k3rs11lre3bkj73cqhdnyyep", columns={"id_compte"}), @ORM\Index(name="FKawj95q5vkbelwq3yxuye1ica9", columns={"id_employe"}), @ORM\Index(name="FKnai9871g9xt9iulbxxfjsb546", columns={"id_table"})})
+ * @ORM\Entity
+ */
+class CommandeArticleTemporaire
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_commande_article_temporaire", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idCommandeArticleTemporaire;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="datetime", nullable=true)
+     */
+    private $date;
+
+    /**
+     * @var \Compte
+     *
+     * @ORM\ManyToOne(targetEntity="Compte")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_compte", referencedColumnName="id_compte")
+     * })
+     */
+    private $idCompte;
+
+    /**
+     * @var \Employe
+     *
+     * @ORM\ManyToOne(targetEntity="Employe")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_employe", referencedColumnName="id_employe")
+     * })
+     */
+    private $idEmploye;
+
+    /**
+     * @var \Tables
+     *
+     * @ORM\ManyToOne(targetEntity="Tables")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_table", referencedColumnName="id_table")
+     * })
+     */
+    private $idTable;
+
+    /**
+     * @var \Article
+     *
+     * @ORM\ManyToOne(targetEntity="Article")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_article", referencedColumnName="id_article")
+     * })
+     */
+    private $idArticle;
+
+
+}
+

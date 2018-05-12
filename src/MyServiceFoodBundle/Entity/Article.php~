@@ -1,0 +1,57 @@
+<?php
+
+namespace MyServiceFoodBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Article
+ *
+ * @ORM\Table(name="article", indexes={@ORM\Index(name="FK5qbslk1ioudummgell60ha69j", columns={"id_categorie"})})
+ * @ORM\Entity
+ */
+class Article
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_article", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idArticle;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="designation", type="string", length=255, nullable=true)
+     */
+    private $designation;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="prix", type="float", precision=10, scale=0, nullable=false)
+     */
+    private $prix;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image_url", type="string", length=255, nullable=true)
+     */
+    private $imageUrl;
+
+    /**
+     * @var \Categorie
+     *
+     * @ORM\ManyToOne(targetEntity="Categorie")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_categorie", referencedColumnName="id_categorie")
+     * })
+     */
+    private $idCategorie;
+
+
+}
+

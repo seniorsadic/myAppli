@@ -1,0 +1,40 @@
+<?php
+
+namespace MyServiceFoodBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Devices
+ *
+ * @ORM\Table(name="devices")
+ * @ORM\Entity
+ */
+class Devices
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=100, nullable=false)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="token", type="text", length=65535, nullable=false)
+     */
+    private $token;
+
+
+}
+

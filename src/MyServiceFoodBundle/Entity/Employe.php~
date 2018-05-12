@@ -1,0 +1,95 @@
+<?php
+
+namespace MyServiceFoodBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Employe
+ *
+ * @ORM\Table(name="employe", uniqueConstraints={@ORM\UniqueConstraint(name="UK_sewfj92skjm3geoc0usfber43", columns={"matricule"})}, indexes={@ORM\Index(name="FKsmpk8x2m3u86pb2sljxayv1j1", columns={"id_cuisine"}), @ORM\Index(name="FKesx2ng44mwxx0gmfskn70hdhi", columns={"id_resto"})})
+ * @ORM\Entity
+ */
+class Employe
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_employe", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idEmploye;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     */
+    private $email;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fonction", type="string", length=255, nullable=true)
+     */
+    private $fonction;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="matricule", type="string", length=255, nullable=false)
+     */
+    private $matricule;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255, nullable=true)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="prenom", type="string", length=255, nullable=true)
+     */
+    private $prenom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="telephone", type="string", length=255, nullable=true)
+     */
+    private $telephone;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image_url", type="string", length=255, nullable=true)
+     */
+    private $imageUrl;
+
+    /**
+     * @var \Restaurant
+     *
+     * @ORM\ManyToOne(targetEntity="Restaurant")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_resto", referencedColumnName="id_resto")
+     * })
+     */
+    private $idResto;
+
+    /**
+     * @var \Cuisine
+     *
+     * @ORM\ManyToOne(targetEntity="Cuisine")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_cuisine", referencedColumnName="id_cuisine")
+     * })
+     */
+    private $idCuisine;
+
+
+}
+

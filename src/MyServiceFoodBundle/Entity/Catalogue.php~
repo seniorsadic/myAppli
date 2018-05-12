@@ -1,0 +1,50 @@
+<?php
+
+namespace MyServiceFoodBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Catalogue
+ *
+ * @ORM\Table(name="catalogue", indexes={@ORM\Index(name="FKp4n67r10q2y3h1qaklicn4u3w", columns={"id_resto"})})
+ * @ORM\Entity
+ */
+class Catalogue
+{
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id_catalogue", type="bigint", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $idCatalogue;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nom", type="string", length=255, nullable=true)
+     */
+    private $nom;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="image_url", type="string", length=255, nullable=true)
+     */
+    private $imageUrl;
+
+    /**
+     * @var \Restaurant
+     *
+     * @ORM\ManyToOne(targetEntity="Restaurant")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_resto", referencedColumnName="id_resto")
+     * })
+     */
+    private $idResto;
+
+
+}
+
