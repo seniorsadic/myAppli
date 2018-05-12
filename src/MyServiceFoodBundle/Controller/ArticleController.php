@@ -63,12 +63,13 @@ class ArticleController extends FOSRestController
     /**
      * @Rest\Put("/articles/{id}")
      */
-    public function getUpdateAgence($id, Request $request)
+    public function updateAgence($id, Request $request)
     {
         $designation=$request->get('designation');
         $prix=$request->get('prix');
         $imageUrl=$request->get('imageUrl');
-        $categorie = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Categorie')->find($request->get('idCategorie'));
+        $idCategorie=$request->get('idCategorie')
+        
         $sn = $this->getDoctrine()->getManager();
         $article = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($id);
 
@@ -87,13 +88,32 @@ class ArticleController extends FOSRestController
             $sn->flush();
         }
 
-        if(!empty($categorie)){
+        if(!empty($idCategorie)){
+            $categorie = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Categorie')->find($idCategorie);
           //  $ville = $this->getDoctrine()->getRepository('MyServiceBundle:Ville')->find($idville);
             $agence->setCategorie($categorie);
             $sn->flush();
         }
 
         return $restresult;
+    }
+
+    /**
+     * @Rest\Delete("/articles/{id}")
+     */
+    public function deleteAgence($id)
+    {
+        $sn = $this->getDoctrine()->getManager();
+        $article = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($id);
+
+        if (empty($article)) {
+            return "nok";
+        }
+        else {
+            $sn->remove($article);
+            $sn->flush();
+        }
+        return "ok";
     }
 
 }
