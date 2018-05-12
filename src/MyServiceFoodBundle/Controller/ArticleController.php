@@ -94,7 +94,7 @@ class ArticleController extends FOSRestController
             $sn->flush();
         }
 
-        return $restresult;
+        return $article;
     }
 
     /**

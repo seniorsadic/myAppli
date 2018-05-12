@@ -33,30 +33,40 @@ class CommandeArticleController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/articles")
+     * @Rest\Get("/commandearticles")
      */
-    public function getAllArticle()
+    public function getAllCommandeArticles()
     {
-        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->findAll();
+        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticle')->findAll();
         return $restresult;
     }
 
     /**
-     * @Rest\Get("/articlesbycategorie/{id}")
+     * @Rest\Get("/commandearticles/{id}")
      */
-    public function getArticleByCategorie($id)
+    public function getCommandeByArticles($id)
     {
-        $categorie= $this->getDoctrine()->getRepository('MyServiceFoodBundle:Categorie')->find($id);
-        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->findBy(array('idCategorie'=>$categorie));
+        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticle')->find($id);
         return $restresult;
     }
 
      /**
-     * @Rest\Get("/articles/{id}")
+     * @Rest\Get("/articlesbycommande/{numero}")
      */
-    public function getAgenceById($id)
+    public function getArticlesByCommande($numero)
     {
-        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($id);
+        $commande=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Commande')->find($id);
+        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticle')->findBy(array('idCommande'=>$commande));
+        return $restresult;
+    }
+
+     /**
+     * @Rest\Get("/articlesbystatutcommande/{statut}")
+     */
+    public function getArticlesByStatutCommande($statut)
+    {
+        $commande=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Commande')->find($id);
+        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticle')->findBy(array('idCommande'=>$commande));
         return $restresult;
     }
 
