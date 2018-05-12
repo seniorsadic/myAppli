@@ -7,7 +7,7 @@ use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
 
-class ArticleController extends FOSRestController
+class CommandeArticleController extends FOSRestController
 {
 
     /**
@@ -68,7 +68,8 @@ class ArticleController extends FOSRestController
         $designation=$request->get('designation');
         $prix=$request->get('prix');
         $imageUrl=$request->get('imageUrl');
-        $idCategorie=$request->get('idCategorie'); 
+        $idCategorie=$request->get('idCategorie');
+        
         $sn = $this->getDoctrine()->getManager();
         $article = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($id);
 
