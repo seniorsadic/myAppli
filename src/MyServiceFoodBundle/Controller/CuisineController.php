@@ -5,19 +5,24 @@
  * Date: 19/11/2017
  * Time: 12:50
  */
-namespace MyServiceBundle\Controller;
+namespace MyServiceFoodBundle\Controller;
+
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
+use MyServiceFoodBundle\Entity\Cuisine;
 
 class CuisineController extends FOSRestController
 {
     /**
-     * @Rest\Post("/cuisines/")
+     * @Rest\Post("/cuisines")
      */
     public function addCuisine(Request $request)
     {
         $nom=$request->get('nom');
         $type=$request->get('type');
         $imageUrl=$request->get('imageUrl');
-        $restaurant = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Restaurant')->find($idResto);
+        $restaurant = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Restaurant')->find($request->get('idResto'));
         $cuisine=new Cuisine();
         $cuisine->setNom($nom);
         $cuisine->setType($type);
@@ -41,35 +46,36 @@ class CuisineController extends FOSRestController
     /**
      * @Rest\Get("/cuisines/{id}")
      */
-    public function getCuisineById($idCuisine)
+    public function getCuisineById($id)
     {
-        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Cuisine')->find($idCuisine);
+        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Cuisine')->find($id);
         return $restresult;
     }
 
     /**
      * @Rest\Put("/cuisines/{id}")
      */
-    public function udpdateCuisine($idCuisine,Request $request)
+    public function udpdateCuisine($id,Request $request)
     {
+        $sn = $this->getDoctrine()->getManager();
         $nom=$request->get('nom');
         $type=$request->get('type');
         $imageUrl=$request->get('imageUrl');
-        $restaurant = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Restaurant')->find($idResto);
-        $sn = $this->getDoctrine()->getManager();
-
+        $idResto=$request->get('idResto');
+        $cuisine = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Cuisine')->find($id);
+       
         if(!empty($nom)){
-            $cuisine->setNom($);
+            $cuisine->setNom($nom);
             $sn->flush();
         }
 
         if(!empty($type)){
-            $cuisine->setType($);
+            $cuisine->setType($type);
             $sn->flush();
         }
 
         if(!empty($imageUrl)){
-            $cuisine->setImageUrl($);
+            $cuisine->setImageUrl($imageUrl);
             $sn->flush();
         }
 
@@ -92,12 +98,12 @@ class CuisineController extends FOSRestController
         $cuisine = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Cuisine')->find($idCuisine);
 
         if (empty($cuisine)) {
-            return new View("Cuisine not found", Response::HTTP_NOT_FOUND);
+            return 'nok';
         }
         else {
             $sn->remove($cuisine);
             $sn->flush();
         }
-        return new View("Cuisine deleted successfully", Response::HTTP_OK);
+        return 'ok';
     }
 }

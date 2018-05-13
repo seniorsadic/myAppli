@@ -11,28 +11,6 @@ class CommandeArticleController extends FOSRestController
 {
 
     /**
-     * @Rest\Post("/article/")
-     */
-    public function addArticle(Request $request)
-    {
-        $designation=$request->get('designation');
-        $prix=$request->get('prix');
-        $imageUrl=$request->get('imageUrl');
-        $categorie = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Categorie')->find($request->get('idCategorie'));
-
-        // Initialiser
-        $article=new Article();
-        $article->setDesignation($designation);
-        $article->setPrix($prix);
-        $article->setImageUrl($imageUrl);
-        $article->setIdCategorie($categorie);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($article);
-        $em->flush();
-        return $article;
-    }
-
-    /**
      * @Rest\Get("/commandearticles")
      */
     public function getAllCommandeArticles()
@@ -65,65 +43,151 @@ class CommandeArticleController extends FOSRestController
      */
     public function getArticlesByStatutCommande($statut)
     {
-        $commande=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Commande')->find($id);
-        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticle')->findBy(array('idCommande'=>$commande));
-        return $restresult;
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            'SELECT ca
+                FROM MyServiceFoodBundle:CommandeArticle ca, 
+                MyServiceFoodBundle:Commande c
+                WHERE c.idCommande=ca.idCommande and c.statut = :x '
+        )->setParameter('x', $statut);
+
+        return $query->getResult();
+    }
+
+     /**
+     * @Rest\Get("/articlesbystatutandstatutcommande/{statut}/{statutcommande}")
+     */
+    public function getarticlesbystatutandstatutcommande($statut,$statutcommande)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $query = $em->createQuery(
+            'SELECT ca
+                FROM MyServiceFoodBundle:CommandeArticle ca, 
+                MyServiceFoodBundle:Commande c
+                WHERE c.idCommande=ca.idCommande and c.statut = :x and ca.statut= :y'
+        )->setParameter('x', $statutcommande)
+        ->setParameter('y', $statut);
+
+        return $query->getResult();
+    }
+
+     /**
+     * @Rest\Get("/serveurCommandesDuJour/{serveur}")
+     */
+    public function getserveurCommandesDuJour($serveur)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $c=date_format(new \DateTime(),'d-m-Y');
+        $compte=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->findOneBy(array('login'=>$serveur));
+        $query = $em->createQuery(
+            'SELECT ca
+                FROM MyServiceFoodBundle:CommandeArticle ca, 
+                MyServiceFoodBundle:Commande c
+                WHERE c.idCommande=ca.idCommande  and c.date like :x and c.idServeur= :y'
+        )->setParameter('x', $c.'%')
+        ->setParameter('y', $compte->getIdEmploye());
+
+        return $query->getResult();
     }
 
     /**
-     * @Rest\Put("/articles/{id}")
+     * @Rest\Get("/cuisinierCommandesDuJour/{cuisinier}")
      */
-    public function updateAgence($id, Request $request)
+    public function getcuisinierCommandesDuJour($cuisinier)
     {
-        $designation=$request->get('designation');
-        $prix=$request->get('prix');
-        $imageUrl=$request->get('imageUrl');
-        $idCategorie=$request->get('idCategorie');
-        
-        $sn = $this->getDoctrine()->getManager();
-        $article = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($id);
+        $em = $this->getDoctrine()->getManager();
+        $c=date_format(new \DateTime(),'d-m-Y');
+        $compte=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->findOneBy(array('login'=>$cuisinier));
 
-        if(!empty($prix)){
-            $article->setPrix($prix);
-            $sn->flush();
-        }
+        $query = $em->createQuery(
+            'SELECT ca
+                FROM MyServiceFoodBundle:CommandeArticle ca, 
+                MyServiceFoodBundle:Commande c
+                WHERE c.idCommande=ca.idCommande  and c.date like :x and ca.idCuisinier= :y'
+        )->setParameter('x', $c.'%')
+        ->setParameter('y', $compte->getIdEmploye());
 
-        if(!empty($designation)){
-            $article->setDesignation($designation);
-            $sn->flush();
-        }
-
-        if(!empty($imageUrl)){
-            $article->setImageUrl($imageUrl);
-            $sn->flush();
-        }
-
-        if(!empty($idCategorie)){
-            $categorie = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Categorie')->find($idCategorie);
-          //  $ville = $this->getDoctrine()->getRepository('MyServiceBundle:Ville')->find($idville);
-            $agence->setCategorie($categorie);
-            $sn->flush();
-        }
-
-        return $restresult;
+        return $query->getResult();
     }
 
     /**
-     * @Rest\Delete("/articles/{id}")
+     * @Rest\Post("/commandearticlesbycuisinier")
      */
-    public function deleteAgence($id)
+    public function getcommandearticlesbycuisinier(Request $request)
     {
-        $sn = $this->getDoctrine()->getManager();
-        $article = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($id);
+        $cuisinier=$request->get('idCuisinier');
+        $em = $this->getDoctrine()->getManager();
+        $compte=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->findOneBy(array('login'=>$cuisinier));
 
-        if (empty($article)) {
-            return "nok";
+        $query = $em->createQuery(
+            'SELECT ca
+                FROM MyServiceFoodBundle:CommandeArticle ca, 
+                MyServiceFoodBundle:Commande c
+                WHERE c.idCommande=ca.idCommande  and ca.idCuisinier= :y'
+        ) ->setParameter('y', $cuisinier);
+
+        return $query->getResult();
+    }
+
+    /**
+     * @Rest\Put("/commandearticles/{id}")
+     */
+    public function updateCommandearticles(Request $request,$id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $commandearticle = $this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticle')->find($id);
+
+        $prixTotal=$request->get('prixTotal');
+        $prixUnitaire=$request->get('prixUnitaire');
+        $quantite=$request->get('quantite');
+        $statut=$request->get('statut');
+        $idArticle=$request->get('idArticle');
+        $idCuisinier=$request->get('idCuisinier');
+        $idCommande=$request->get('idCommande');
+        if(!empty($prixTotal)){
+            $commandearticle->setPrixTotal($prixTotal);
+        } 
+        if(!empty($prixUnitaire)){
+            $commandearticle->setPrixUnitaire($prixUnitaire);
         }
-        else {
-            $sn->remove($article);
-            $sn->flush();
+        if(!empty($quantite)){
+            $commandearticle->setQuantite($quantite);
         }
-        return "ok";
+        if(!empty($statut)){
+            $commandearticle->setStatut($statut);
+        }
+        if(!empty($idArticle)){
+            $article=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($idArticle);
+            $commandearticle->setIdArticle($article);
+        }
+        if(!empty($idCuisinier)){
+            $cuisinier=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Cuisinier')->find($idCuisinier);
+            $commandearticle->setIdCuisinier($cuisinier);
+        }
+        if(!empty($idCommande)){
+            $commande=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Commande')->find($idCommande);
+            $commandearticle->setIdCommande($commande);
+        }
+        $em->flush();
+        return $commandearticle;
+    }
+
+    /**
+     * @Rest\Delete("/commandearticles/{id}")
+     */
+    public function commandearticles($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $commandearticle = $this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticle')->find($id);
+
+        if (!$commandearticle) {
+            return 'nok';
+        }
+        else{
+            $em->remove($commandearticle);
+            $em->flush();
+            return 'ok';
+        }
     }
 
 }
