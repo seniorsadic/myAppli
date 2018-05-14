@@ -2,7 +2,7 @@
 
 namespace MyServiceFoodBundle\Controller;
 
-use MyServiceFoodBundle\Entity\Article;
+use MyServiceFoodBundle\Entity\CommandeArticleTemporaire;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,16 +42,18 @@ class CommandeArticleTemporaireController extends FOSRestController
      */
     public function addtemporaires(Request $request)
     {
+        
         $compte=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->find($request->get('idCompte'));
         $employe=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Employe')->find($request->get('idEmploye'));
-        $table=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Table')->find($request->get('idTable'));
+        $table=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Tables')->find($request->get('idTable'));
         $article=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($request->get('idArticle'));
         $commandearticletemporaire=new CommandeArticleTemporaire();
         $commandearticletemporaire->setDate(new \DateTime());
         $commandearticletemporaire->setIdEmploye($employe);
         $commandearticletemporaire->setIdCompte($compte);
-        $commandearticletemporaire->setTable($table);
-        $commandearticletemporaire->setArticle($article);
+        $commandearticletemporaire->setIdTable($table);
+        
+        $commandearticletemporaire->setIdArticle($article);
         $em = $this->getDoctrine()->getManager();
         $em->persist($commandearticletemporaire);
         $em->flush();
@@ -67,7 +69,7 @@ class CommandeArticleTemporaireController extends FOSRestController
         $commandearticletemporaire=$this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticleTemporaire')->find($id);
         $compte=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->find($request->get('idCompte'));
         $employe=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Employe')->find($request->get('idEmploye'));
-        $table=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Table')->find($request->get('idTable'));
+        $table=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Tables')->find($request->get('idTable'));
         $article=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($request->get('idArticle'));
         
         
@@ -78,10 +80,10 @@ class CommandeArticleTemporaireController extends FOSRestController
             $commandearticletemporaire->setIdEmploye($employe);
         }
         if(!empty($table)){
-            $commandearticletemporaire->setTable($table);
+            $commandearticletemporaire->setIdTable($table);
         }
         if(!empty($article)){
-            $commandearticletemporaire->setArticle($article);
+            $commandearticletemporaire->setIdArticle($article);
         }
         $em->flush();
         return $commandearticletemporaire;
