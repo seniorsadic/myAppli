@@ -105,13 +105,13 @@ class CompteController extends FOSRestController
         $compte = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->find($idCompte);
 
         if (empty($compte)) {
-            return 'nok';
+            return FALSE;
         }
         else {
             $sn->remove($compte);
             $sn->flush();
         }
-        return 'ok';
+        return TRUE;
     }
 
 }

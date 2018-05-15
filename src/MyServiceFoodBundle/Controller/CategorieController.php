@@ -86,12 +86,12 @@ class CategorieController extends FOSRestController
         $categorie = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Categorie')->find($id);
 
         if (!$categorie) {
-            return 'nok';
+            return FALSE;
         }
         else{
             $em->remove($categorie);
             $em->flush();
-            return 'ok';
+            return TRUE;
         }
 
     }

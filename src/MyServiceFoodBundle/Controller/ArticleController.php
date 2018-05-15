@@ -106,13 +106,13 @@ class ArticleController extends FOSRestController
         $article = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($id);
 
         if (empty($article)) {
-            return "nok";
+            return FALSE;
         }
         else {
             $sn->remove($article);
             $sn->flush();
         }
-        return "ok";
+        return TRUE;
     }
 
 }

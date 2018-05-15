@@ -98,12 +98,12 @@ class CuisineController extends FOSRestController
         $cuisine = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Cuisine')->find($idCuisine);
 
         if (empty($cuisine)) {
-            return 'nok';
+            return TRUE;
         }
         else {
             $sn->remove($cuisine);
             $sn->flush();
         }
-        return 'ok';
+        return FALSE;
     }
 }

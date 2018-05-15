@@ -181,12 +181,12 @@ class CommandeArticleController extends FOSRestController
         $commandearticle = $this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticle')->find($id);
 
         if (!$commandearticle) {
-            return 'nok';
+            return FALSE;
         }
         else{
             $em->remove($commandearticle);
             $em->flush();
-            return 'ok';
+            return TRUE;
         }
     }
 
