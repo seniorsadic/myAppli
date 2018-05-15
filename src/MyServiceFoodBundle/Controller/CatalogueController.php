@@ -2,48 +2,102 @@
 
 namespace MyServiceFoodBundle\Controller;
 
+use MyServiceFoodBundle\Entity\Catalogue;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Request;
 
 class CatalogueController extends FOSRestController
 {
 
+    // Méthode d'ajout d'un catalogue
     /**
-     * @Rest\Post("/article/")
+     * @Rest\Post("/catalogues")
      */
-    public function getAddArticle()
+    public function addCatalogue(Request $request)
     {
-        $designation=$request->get('designation');
-        $idville=$request->get('idville');
-        $ville = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($idville);
-        $agence=new Agence();
-        $agence->setDesignation($designation);
-        $agence->setIdville($ville);
+        $nom=$request->get('nom');
+        $imageUrl=$request->get('imageUrl');
+        $resto = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Restaurant')->find($request->get('idResto'));
+        $catalogue=new Catalogue();
+        $catalogue->setNom($nom);
+        $catalogue->setImageurl($imageUrl);
+        $catalogue->setIdResto($resto);
         $em = $this->getDoctrine()->getManager();
-        $em->persist($agence);
+        $em->persist($catalogue);
         $em->flush();
-        return $agence;
-
-        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->findAll();
-        return $restresult;
+        return $catalogue;
     }
 
+    //methode get pour recuperer toutes les catalogues
     /**
-     * @Rest\Get("/articles")
+     * @Rest\Get("/catalogues")
      */
-    public function getAllArticle()
+    public function getAllCatalogue()
     {
-        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->findAll();
+        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Catalogue')->findAll();
         return $restresult;
     }
 
-     /**
-     * @Rest\Get("/article/{idarticle}")
+    //methode get pour recuperer une seule catalogue
+    /**
+     * @Rest\Get("/catalogues/{id}")
      */
-    public function getAgenceById($idarticle)
+    
+    public function getCatalogueById($id)
     {
-        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($idarticle);
+        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Catalogue')->find($id);
         return $restresult;
+    }
+
+    //methode put pour mettre à jour un catalogue
+    /**
+     * @Rest\Put("/catalogues/{id}")
+     */
+
+    public function udpdateCatalogue($id,Request $request)
+    {
+        $nom=$request->get('nom');
+        $imageUrl=$request->get('imageUrl');
+        $idResto=$request->get('idResto');
+        $sn = $this->getDoctrine()->getManager();
+        $catalogue= $this->getDoctrine()->getRepository('MyServiceFoodBundle:Catalogue')->find($id);
+
+        if(!empty($nom)){
+            $catalogue->setNom($nom);
+            $sn->flush();
+        }
+        if(!empty($imageUrl)){
+            $catalogue->setImageUrl($imageUrl);
+            $sn->flush();
+        }
+        if(!empty($idResto)){
+            $resto = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Restaurant')->find($idResto);
+            $catalogue->setIdResto($resto);
+            $sn->flush();
+        }
+
+        return $catalogue;
+
+    }
+
+    // methode delete pour la supression d'un catalogue
+    /**
+     *@Rest\Delete("/catalogues/{id}")
+     */
+    public function deleteCatalogue($id)
+    {
+        $sn = $this->getDoctrine()->getManager();
+        $catalogue = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Catalogue')->find($id);
+
+        if (empty($catalogue)) {
+            return FALSE;
+        }
+        else {
+            $sn->remove($catalogue);
+            $sn->flush();
+        }
+        return TRUE;
     }
 
 }
