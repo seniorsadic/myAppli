@@ -37,6 +37,17 @@ class CompteController extends FOSRestController
     }
 
     /**
+     * @Rest\Post("/loginandpassword")
+     */
+    public function loginpassword(Request $request)
+    {
+        $login=$request->get('login');
+        $password=$request->get('password');
+        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->findOneBy(array('login'=>$login,'password'=>$password));
+        return $restresult;
+    }
+
+    /**
      * @Rest\Get("/comptes")
      */
     public function getAllCompte()

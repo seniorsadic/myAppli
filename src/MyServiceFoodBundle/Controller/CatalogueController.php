@@ -18,7 +18,7 @@ class CatalogueController extends FOSRestController
     {
         $nom=$request->get('nom');
         $imageUrl=$request->get('imageUrl');
-        $resto = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Restaurant')->find($request->get('idResto'));
+        $resto = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Restaurant')->find($request->get('id_resto'));
         $catalogue=new Catalogue();
         $catalogue->setNom($nom);
         $catalogue->setImageurl($imageUrl);
@@ -59,7 +59,7 @@ class CatalogueController extends FOSRestController
     {
         $nom=$request->get('nom');
         $imageUrl=$request->get('imageUrl');
-        $idResto=$request->get('idResto');
+        $idResto=$request->get('id_resto');
         $sn = $this->getDoctrine()->getManager();
         $catalogue= $this->getDoctrine()->getRepository('MyServiceFoodBundle:Catalogue')->find($id);
 

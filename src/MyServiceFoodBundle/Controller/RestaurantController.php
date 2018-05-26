@@ -47,7 +47,7 @@ class RestaurantController extends FOSRestController
         $imageUrl=$request->get('imageUrl');
 
         // Initialiser
-        $restaurant=new Commande();
+        $restaurant=new Restaurant();
         $restaurant->setAdresse($adresse);
         $restaurant->setCode($code);
         $restaurant->setDesignation($designation);
