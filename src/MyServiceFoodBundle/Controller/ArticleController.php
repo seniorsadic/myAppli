@@ -11,14 +11,14 @@ class ArticleController extends FOSRestController
 {
 
     /**
-     * @Rest\Post("/article/")
+     * @Rest\Post("/articles")
      */
     public function addArticle(Request $request)
     {
         $designation=$request->get('designation');
         $prix=$request->get('prix');
         $imageUrl=$request->get('imageUrl');
-        $categorie = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Categorie')->find($request->get('idCategorie'));
+        $categorie = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Categorie')->find($request->get('id_categorie'));
 
         // Initialiser
         $article=new Article();
