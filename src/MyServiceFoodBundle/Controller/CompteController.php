@@ -59,16 +59,16 @@ class CompteController extends FOSRestController
     /**
      * @Rest\Get("/comptes/{id}")
      */
-    public function getCompteById($idCompte)
+    public function getCompteById($id)
     {
-        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->find($idCompte);
+        $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->find($id);
         return $restresult;
     }
 
     /**
      * @Rest\Put("/comptes/{id}")
      */
-    public function udpdateCompte($idCompte,Request $request)
+    public function udpdateCompte($id,Request $request)
     {
         $login=$request->get('login');
         $password=$request->get('password');
@@ -76,6 +76,7 @@ class CompteController extends FOSRestController
         $token=$request->get('token');
         $employe = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Employe')->find($request->get('idEmploye'));
         $sn = $this->getDoctrine()->getManager();
+        $compte = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->find($id);
 
         if(!empty($login)){
             $compte->setLogin($login);
@@ -110,10 +111,10 @@ class CompteController extends FOSRestController
     /**
      *@Rest\Delete("/comptes/{id}")
      */
-    public function deleteCompte($idComptre)
+    public function deleteCompte($id)
     {
         $sn = $this->getDoctrine()->getManager();
-        $compte = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->find($idCompte);
+        $compte = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->find($id);
 
         if (empty($compte)) {
             return FALSE;
