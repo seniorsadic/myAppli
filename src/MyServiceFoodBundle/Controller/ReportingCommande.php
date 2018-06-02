@@ -15,7 +15,7 @@ class ReportingCommande extends FOSRestController
 {
 
     /**
-     * @Rest\Post("/article/")
+     * @Rest\Get("/reportcommande/")
      */
     public function getReportCommande()
     {
