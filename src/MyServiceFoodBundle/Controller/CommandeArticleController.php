@@ -38,6 +38,32 @@ class CommandeArticleController extends FOSRestController
         return $restresult;
     }
 
+    /**
+     * @Rest\Post("/commandearticles")
+     */
+    public function getcommandearticles(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $commande=$request->get('commandeArticles');
+        $table = $this->getDoctrine()->getRepository('MyServiceFoodBundle:Tables')->findOneBy(array('numero'=>$commande[0]->getIdCommande()->getIdTable()->getNumero()));
+        if(!empty($table)){
+            $commande[0]->getIdCommande()->setIdTable($table);
+        }
+        else{
+           
+            $table1=$commande[0]->getIdCommande()->getIdTable();
+            $em->persist($table1);
+            $commande[0]->getIdCommande()->setIdTable($table1);
+        }
+        $commande[0]->getIdCommande()->setDate(new \DateTime());
+        $em->persist($commande[0]->getIdCommande());
+        foreach ($commande as $value){
+            $em->persist($value);
+        }
+        $em->flush();
+        return $restresult;
+    }
+
      /**
      * @Rest\Get("/articlesbystatutcommande/{statut}")
      */
