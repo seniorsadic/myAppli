@@ -30,8 +30,8 @@ class ReportingCommande extends FOSRestController
             ->addSelect('a')
             ->addSelect('ct')
             ->addSelect('e')
-            ->groupBy('c.numero, a.designation,ca.quantite,ca.prixUnitaire, ca.prixTotal,c.date,e.nom,e.prenom')
-            ->select('c.numero, a.designation,ca.quantite,ca.prixUnitaire, ca.prixTotal,c.date,e.nom,e.prenom,count(0) ,sum(ca.prixTotal) ')
+            ->groupBy('c.numero, a.designation,ct.nom,ca.quantite,ca.prixUnitaire, ca.prixTotal,c.date,e.nom,e.prenom')
+            ->select('c.numero, a.designation,ct.nom,ca.quantite,ca.prixUnitaire, ca.prixTotal,c.date,e.nom,e.prenom,count(0) ,sum(ca.prixTotal) ')
             ->getQuery();
         $restresult=$query->getResult();
 
