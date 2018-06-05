@@ -3,7 +3,7 @@
 namespace MyServiceFoodBundle\Controller;
 
 use MyServiceFoodBundle\Entity\Article;
-use MyServiceFoodBundle\Entity\Commande_article;
+use MyServiceFoodBundle\Entity\CommandeArticle;
 use MyServiceFoodBundle\Entity\Commande;
 use MyServiceFoodBundle\Entity\Categorie;
 use MyServiceFoodBundle\Entity\Employe;
@@ -19,7 +19,7 @@ class ReportingCommande extends FOSRestController
      */
     public function getReportCommande()
     {
-        $em=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Commande_article');
+        $em=$this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticle');
         $query=$em->createQueryBuilder('ca')
             ->join('ca.id_commannde','c')
             ->join('ca.id_article','a')
