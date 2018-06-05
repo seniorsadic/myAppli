@@ -15,23 +15,23 @@ class ReportingCommande extends FOSRestController
 {
 
     /**
-     * @Rest\Get("/reportcommande/")
+     * @Rest\Get("/reportcommande")
      */
     public function getReportCommande()
     {
         $em=$this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticle');
         $query=$em->createQueryBuilder('ca')
-            ->join('ca.id_commannde','c')
-            ->join('ca.id_article','a')
-            ->join('a.id_categorie','ct')
-            ->join('c.id_serveur','e')
+            ->join('ca.idCommande','c')
+            ->join('ca.idArticle','a')
+            ->join('a.idCategorie','ct')
+            ->join('c.idServeur','e')
             ->addSelect('ca')
             ->addSelect('c')
             ->addSelect('a')
             ->addSelect('ct')
             ->addSelect('e')
-            ->groupBy('c.numero, a.designation,ca.quantite,ca.prix_unitaire, ca.prix_total,c.date,e.nom,e.prenom')
-            ->select('c.numero, a.designation,ca.quantite,ca.prix_unitaire, ca.prix_total,c.date,e.nom,e.prenom, sum(ca.prix_total), count(0)')
+            ->groupBy('c.numero, a.designation,ca.quantite,ca.prixUnitaire, ca.prixTotal,c.date,e.nom,e.prenom')
+            ->select('c.numero, a.designation,ca.quantite,ca.prixUnitaire, ca.prixTotal,c.date,e.nom,e.prenom,count(0) ,sum(ca.prixTotal) ')
             ->getQuery();
         $restresult=$query->getResult();
 

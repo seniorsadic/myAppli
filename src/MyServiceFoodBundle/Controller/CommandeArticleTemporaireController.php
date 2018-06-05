@@ -32,7 +32,7 @@ class CommandeArticleTemporaireController extends FOSRestController
      */
     public function getarticlestemporaires(Request $request)
     {
-        $employe= $this->getDoctrine()->getRepository('MyServiceFoodBundle:Employe')->find($request->get('idEmploye'));
+        $employe= $this->getDoctrine()->getRepository('MyServiceFoodBundle:Employe')->find($request->get('id_employe'));
         $restresult = $this->getDoctrine()->getRepository('MyServiceFoodBundle:CommandeArticleTemporaire')->findBy(array('idEmploye'=>$employe));
         return $restresult;
     }
@@ -42,16 +42,16 @@ class CommandeArticleTemporaireController extends FOSRestController
      */
     public function addtemporaires(Request $request)
     {
-        
-        $compte=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->find($request->get('idCompte'));
-        $employe=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Employe')->find($request->get('idEmploye'));
-        $table=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Tables')->find($request->get('idTable'));
-        $article=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($request->get('idArticle'));
+      
+      //  $compte=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Compte')->find($request->get('id_compte'));
+        $employe=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Employe')->find($request->get('id_employe'));
+      //  $table=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Tables')->find($request->get('id_table'));
+        $article=$this->getDoctrine()->getRepository('MyServiceFoodBundle:Article')->find($request->get('id_article'));
         $commandearticletemporaire=new CommandeArticleTemporaire();
         $commandearticletemporaire->setDate(new \DateTime());
         $commandearticletemporaire->setIdEmploye($employe);
-        $commandearticletemporaire->setIdCompte($compte);
-        $commandearticletemporaire->setIdTable($table);
+     //   $commandearticletemporaire->setIdCompte($compte);
+      //  $commandearticletemporaire->setIdTable($table);
         
         $commandearticletemporaire->setIdArticle($article);
         $em = $this->getDoctrine()->getManager();
